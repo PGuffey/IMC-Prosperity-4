@@ -2,7 +2,7 @@
 
 IMC's Prosperity competition is a globally renowned quant trading competition where university students battle it out over 5 rounds of algorithmic trading for a chance at $50,000's in prize money. Prosperity tests its competitors on topics ranging from basic market making to complex basket arbitration.
 
-This year's Prosperity 4 had over 34,000 students, or roughly 22,200 teams from 117 countries register to compete. The following writeup shares our insights and strategies that got us 16th out of 22,179 teams in IMC's Prosperity 4 (2026).
+This year's Prosperity 4 had over 30,000 students, or roughly 18,800 teams from 117 countries register to compete. The following writeup shares our insights and strategies that got us 16th out of 18,803 teams in IMC's Prosperity 4 (2026).
 
 ## The Team
 
@@ -156,7 +156,11 @@ While ACO was not our biggest Round 1 earner, it was a useful introduction to bu
 
 ---
 
-The first round of manual trading was an auction optimization problem for both Dryland Flax and Ember Mushroom. Where the goal was to maximize profit as the final bidder with the caveat that our bid might push the clearing price higher. This was a straightforward optimization problem to solve once the rules were programmed and we submitted the optimal order of Buy 9,999 @ 30 for Flax and Buy 19,999 @ 17 for Mushroom.
+The first round of manual trading was an auction optimization problem for both Dryland Flax and Ember Mushroom. The goal was to maximize profit as the final bidder, given that our bid could push the clearing price higher, since the auction clears at the price that maximizes total traded volume, with ties broken by the higher price, and we hold last position in time priority at any price level we join.
+
+For Dryland Flax (buyback: 30, no fee), we needed the lowest clearing price we could achieve while still getting filled. Bidding Buy 9,999 @ 30 keeps the clearing price at 29, giving a unit edge of 1.00 and total profit of 9,999. Increasing to 10,000 units would tie volumes at 29 and 30, triggering the higher-price tie-break and collapsing our edge to zero.
+
+For Ember Mushroom (buyback: 20, fee: 0.10/unit, net value: 19.90), the same logic applied. Buy 19,999 @ 17 holds the clearing price at 16, yielding a unit edge of 3.90 and total profit of 77,996.10. Pushing to 20,000+ moves the clearing price to 17, cutting unit edge by 1.00. Combined expected profit across both products was 87,995.10.
 
 ### Round 2: Algorithmic Trading
 
@@ -174,7 +178,11 @@ Aside from the missed market-access bid, the main takeaway from Round 2 was reco
 
 ---
 
-Round 2 manual involved playing against other players on the Speed parameter while splitting our budget across Research, Scale, and Speed. We implemented a "solver" where we could do a sweep across the possible combinations and see how they would perform against teams running a mix of different strategies for the speed parameter. Once we decided on a speed it was just an optimization for Research and Scale with the rest of the budget as they were not affected by other players. We landed on 40 speed being the safest value against a mix of other strats but decided to up it to 42 to "leapfrog" the other teams that were also bound to find 40. Thus our final submission for this round was 15 Research, 43 scale, and 42 speed. This worked well, and ended up being optimal :). Below is a screenshot of what the simulator looked like when providing expected returns for different allocations.
+The second round of manual trading introduced a three-way budget allocation problem across Research, Scale, and Speed, with a total budget of 50,000 XIRECs. The final PnL formula was Research x Scale x Speed - Budget Used, where Research grows logarithmically with investment, Scale grows linearly, and Speed is rank-based across all competing teams, with the highest investor receiving a 0.9 multiplier and the lowest receiving 0.1.
+
+Since Research and Scale are purely deterministic given your allocation, the core challenge was Speed: a competitive parameter where the optimal investment depended on what other teams submitted. We built a solver to sweep across all budget combinations and simulate expected returns against a distribution of plausible opponent Speed strategies. This let us identify allocations that were robust across scenarios rather than optimal only against a single assumed opponent.
+
+The sweep consistently pointed to ~40% Speed as the most stable choice. However, anticipating that other teams running similar analysis would converge on the same value, and that ties share the same rank, we nudged our Speed allocation to 42% to leapfrog any teams anchored at 40. The remaining budget was then optimally split between Research and Scale, yielding a final submission of 15% Research, 43% Scale, 42% Speed. This turned out to be the optimal allocation. Below is a screenshot of the simulator showing expected returns across different allocation combinations.
 
 <p align="center">
   <img src="images/Manual-Round-2-Capture.JPG" alt="Round 2 manual trading screenshot" width="700" />
