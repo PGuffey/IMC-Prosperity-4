@@ -2,7 +2,7 @@
 
 IMC's Prosperity competition is a globally renowned quant trading competition where university students battle it out over 5 rounds of algorithmic trading for a chance at $50,000's in prize money. Prosperity tests its competitors on topics ranging from basic market making to complex basket arbitration.
 
-This year's Prosperity 4 had over 30,000 students, or roughly 18,800 teams from 117 countries register to compete. The following writeup shares our insights and strategies that got us 16th out of 18,803 teams in IMC's Prosperity 4 (2026).
+This year's Prosperity 4 had over 30,000 students, or roughly 18,800 teams from 117 countries register to compete. The following writeup shares our insights and strategies that got us 16th globally in IMC's Prosperity 4 (2026).
 
 ## The Team
 
